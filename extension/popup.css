@@ -1,0 +1,22 @@
+:root { color-scheme: light; font-family: system-ui, -apple-system, sans-serif; color: #20392e; background: #f7f8f2; }
+* { box-sizing: border-box; }
+body { width: 340px; margin: 0; padding: 24px; }
+.eyebrow { color: #46715c; font-size: 10px; font-weight: 800; letter-spacing: 1.8px; }
+h1 { font-size: 28px; letter-spacing: -1px; margin: 7px 0 10px; }
+.intro { font-size: 13px; line-height: 1.6; margin: 0 0 21px; color: #56665b; }
+#openPanel { width:100%; border:0; border-radius:10px; padding:11px; background:#216b4c; color:white; font:700 13px system-ui; cursor:pointer; }
+#selectionCount { font-size:11px; color:#6b795f; margin:7px 0 16px; }
+.mode-label { font-size:11px; display:block; margin-bottom:6px; }
+#mode { width:100%; padding:9px; border:1px solid #ccd6c5; border-radius:9px; margin-bottom:20px; background:white; color:#20392e; }
+.toggle { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 700; border-radius: 12px; background: #e7eddf; padding: 14px; cursor: pointer; }
+.toggle input { width: 19px; height: 19px; }
+input { accent-color: #216b4c; }
+.option { display: flex; gap: 8px; align-items: center; font-size: 12px; margin: 16px 0 20px; cursor: pointer; }
+.interval { display: flex; justify-content: space-between; gap: 5px; font-size: 11px; }
+.interval span { font-weight: 700; white-space: nowrap; }
+input[type="range"] { width: 100%; margin: 12px 0 17px; }
+#status { padding: 12px; border: 1px solid #d7dfcf; border-radius: 10px; background: white; font-size: 12px; line-height: 1.5; }
+.stats { display: flex; justify-content: space-between; font-size: 11px; margin: 13px 0 20px; color: #62705f; }
+.stats b { color: #20392e; }
+.note { font-size: 11px; line-height: 1.65; color: #788171; margin-bottom: 0; }
+input:focus-visible { outline: 2px solid #b57211; outline-offset: 3px; }

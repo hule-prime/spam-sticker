@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="vi">
+<head><meta charset="utf-8"><title>KuKu extension test fixture</title></head>
+<body>
+<main class="shell" data-pane="thread">
+  <button class="conversation-item active" id="room-a">Chat A</button>
+  <button class="conversation-item" id="room-b">Chat B</button>
+  <div class="message-list"></div>
+</main>
+<script>
+  let room = "a";
+  const history = { a: [], b: [] };
+  const statuses = [];
+  window.addEventListener("message", event => {
+    if (event.data?.source === "kuku-sticker-x3:page" && event.data.type === "STATUS") statuses.push(event.data.status);
+  });
+  function insert(message) {
+    const list = document.querySelector(".message-list");
+    const existing = document.getElementById(`message-${message.id}`);
+    if (existing) return;
+    const row = document.createElement("div");
+    row.id = `message-${message.id}`;
+    row.dataset.messageId = message.id;
+    row.className = `message-row ${message.senderUserId === "me" ? "mine" : "theirs"} ${message.messageType === "sticker" ? "sticker-row" : ""}`;
+    row.__reactFiber$fixture = { memoizedProps: {}, return: { memoizedProps: { message }, return: null } };
+    const body = document.createElement("div");
+    body.className = "message";
+    body.textContent = message.id;
+    if (message.sticker?.fileUrl) {
+      const image = document.createElement("img");
+      image.src = `/api${message.sticker.fileUrl}`;
+      image.alt = message.sticker.name || "Sticker";
+      image.width = 60;
+      image.height = 60;
+      body.append(image);
+    }
+    body.addEventListener("contextmenu", event => {
+      event.preventDefault();
+      document.querySelectorAll(".message-menu").forEach(menu => menu.remove());
+      const menu = document.createElement("div");
+      menu.className = "message-menu";
+      menu.setAttribute("role", "menu");
+      const reply = document.createElement("button");
+      reply.setAttribute("role", "menuitem");
+      reply.textContent = "Trả lời";
+      reply.addEventListener("click", () => { window.fixture.nativeReplies++; });
+      menu.append(reply);
+      row.append(menu);
+    });
+    row.append(body);
+    list.append(row);
+  }
+  function receive(message) {
+    if (!history[message.conversationId]) history[message.conversationId] = [];
+    history[message.conversationId].push(message);
+    if (message.conversationId === room) insert(message);
+  }
+  function switchRoom(next) {
+    room = next;
+    document.querySelectorAll(".conversation-item").forEach(button => button.classList.toggle("active", button.id === `room-${next}`));
+    document.querySelector(".message-list").replaceChildren();
+    history[room].forEach(insert);
+  }
+  const socket = new WebSocket(`wss://${location.host}/api/hubs/chat?access_token=fixture-only`);
+  socket.addEventListener("message", event => {
+    for (const frame of event.data.split("\x1e")) {
+      try {
+        const parsed = JSON.parse(frame);
+        if (parsed.target === "MessageCreated") parsed.arguments.forEach(receive);
+      } catch {}
+    }
+  });
+  document.addEventListener("keydown", event => { if (event.key === "Escape") document.querySelectorAll(".message-menu").forEach(menu => menu.remove()); });
+  window.fixture = { receive, switchRoom, statuses, socket, history, nativeReplies: 0 };
+  receive({ id: "old", conversationId: "a", senderUserId: "friend", messageType: "sticker", stickerId: "incoming", createdAt: "2020-01-01T00:00:00Z" });
+</script>
+</body>
+</html>

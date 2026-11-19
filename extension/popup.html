@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KuKu Sticker ×3</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="eyebrow">KUKU AUTO STICKER</div>
+  <h1>Một vào. Ba ra.</h1>
+  <p class="intro">Gom tin trong <b>2 giây</b> → reply bằng <b>3 sticker trong danh sách bạn chọn</b>. Không cộng dồn.</p>
+  <button id="openPanel" type="button">Mở bảng chọn sticker</button>
+  <p id="selectionCount">Chưa chọn sticker trả lời</p>
+  <label class="toggle"><span>Tự động gửi sticker</span><input id="enabled" type="checkbox" role="switch"></label>
+  <label class="option"><input id="reactToImages" type="checkbox"><span>Phản hồi cả ảnh đính kèm</span></label>
+  <label class="mode-label" for="mode">Chế độ phản hồi</label>
+  <select id="mode"><option value="all">Mọi sticker / ảnh mới</option><option value="matched">Chỉ sticker đã theo dõi</option></select>
+  <label class="interval" for="intervalMs">Khoảng cách giữa các sticker <span id="intervalValue">0,8 giây</span></label>
+  <input id="intervalMs" type="range" min="400" max="3000" step="100" value="800">
+  <div id="status" role="status">Đang đọc trạng thái…</div>
+  <div class="stats"><span><b id="sent">0</b> sticker đã gửi</span><span><b id="available">—</b> trong khay</span></div>
+  <p class="note">Chuột phải sticker trong chat để thêm vào danh sách trả lời hoặc danh sách theo dõi. Khi đang gửi sẽ không xếp thêm lượt.</p>
+  <script src="core.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
